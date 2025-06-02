@@ -1,32 +1,33 @@
 name: 08 - Using Variables
+
 env:
-   WORKFLOW_VAR: 'I am a workflow env var'
-   OVERWRITTEN: 'I will be overwritten'
+  WORKFLOW_VAR: 'I am a workflow env var'
+  OVERWRITTEN: 'I will be overwritten'
 
 on:
-    push:
-  
-    workflow_dispatch:
+  push:
+  workflow_dispatch:
 
 jobs:
-    echo:
-        runs-on: ubuntu-latest
+  echo:
+    runs-on: ubuntu-latest
+    env:
+      JOB_VAR: 'I am a job env var'
+      OVERWRITTEN: 'I have been overwritten at the job level'
+    steps:
+      - name: Print Env Variables
+        run: |
+          echo "Step env var: ${{ env.STEP_VAR }}"
+          echo "Step env var 2: ${{ env.STEP_VAR2 }}"
+          echo "Job env var: ${{ env.JOB_VAR }}"
+          echo "Workflow env var: ${{ env.WORKFLOW_VAR }}"
+          echo "Overwritten: ${{ env.OVERWRITTEN }}"
         env:
-            JOB_VAR: 'I am a job env var'
-            OVERWRITTEN: 'I have been overwritten at the job level'
-            steps:
-            - name: Print Env Variables
-              run: |
-                echo "Step env var: ${{ env.STEP_VAR }}"
-                echo "Step env var 2: ${{ env.STEP_VAR2 }}"
-                echo "Job env var: ${{ env.JOB_VAR }}"
-                echo "Workflow env var: ${{ env.WORKFLOW_VAR }}"
-                echo "Overwritten: ${{ env.OVERWRITTEN }}"
-              env:
-                STEP_VAR: 'I am a step env var'
-                STEP_VAR2: 'I am another step var'
-            - name: Overwrite Job Variable
-              run: |
-                echo "Step env var: ${{ env.OVERWRITTEN }}"
-              env:
-                OVERWRITTEN: 'I have been overwritten at the step level'              
+          STEP_VAR: 'I am a step env var'
+          STEP_VAR2: 'I am another step var'
+
+      - name: Overwrite Job Variable
+        run: |
+          echo "Step env var: ${{ env.OVERWRITTEN }}"
+        env:
+          OVERWRITTEN: 'I have been overwritten at the step level'
