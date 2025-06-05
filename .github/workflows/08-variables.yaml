@@ -6,7 +6,6 @@ env:
   UNDEFINED_VAR_WITH_DEFAULT: ${{ vars.UNDEFINED_VAR || 'default value' }}
 
 on:
-  push:
   workflow_dispatch:
 
 jobs:
